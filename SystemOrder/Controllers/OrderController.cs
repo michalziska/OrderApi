@@ -131,7 +131,7 @@ namespace SystemOrder.Controllers
 
 			if (!result.Success)
 			{
-				return BadRequest(result);
+				return BadRequest(new ErrorResource(result.Message));
 			}
 
 			return Ok(result.Resource);
@@ -140,7 +140,7 @@ namespace SystemOrder.Controllers
 		[HttpPost]
 		[Route("AddOrder")]
 		[ProducesResponseType(typeof(Order), 201)]
-		[ProducesResponseType(typeof(Order), 400)]
+		[ProducesResponseType(typeof(ErrorResource), 400)]
 		public async Task<IActionResult> PostOrderAsync([FromBody] SaveOrderResource resource)
 		{
 
@@ -149,7 +149,7 @@ namespace SystemOrder.Controllers
 
 			if (!result.Success)
 			{
-				return BadRequest(result);
+				return BadRequest(new ErrorResource(result.Message));
 			}
 
 			return Ok(result.Resource);
@@ -157,7 +157,7 @@ namespace SystemOrder.Controllers
 
 		[HttpPut("UpdateOrder")]
 		[ProducesResponseType(typeof(Order), 201)]
-		[ProducesResponseType(typeof(Order), 400)]
+		[ProducesResponseType(typeof(ErrorResource), 400)]
 		public async Task<IActionResult> PutOrderAsync(int id, [FromBody] SaveOrderResource resource)
 		{
 			var order = _mapper.Map<SaveOrderResource, Order>(resource);
@@ -165,7 +165,7 @@ namespace SystemOrder.Controllers
 
 			if (!result.Success)
 			{
-				return BadRequest(result);
+				return BadRequest(new ErrorResource(result.Message));
 			}
 
 			return Ok(result.Resource);
@@ -173,14 +173,14 @@ namespace SystemOrder.Controllers
 
 		[HttpDelete("DeleteOrder")]
 		[ProducesResponseType(typeof(Product), 200)]
-		[ProducesResponseType(typeof(Product), 400)]
+		[ProducesResponseType(typeof(ErrorResource), 400)]
 		public async Task<IActionResult> DeleteOrderAsync(int id)
 		{
 			var result = await _orderService.DeleteOrderAsync(id);
 
 			if (!result.Success)
 			{
-				return BadRequest(result);
+				return BadRequest(new ErrorResource(result.Message));
 			}
 
 			return Ok(result.Resource);

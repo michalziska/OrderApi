@@ -39,29 +39,15 @@ namespace SystemOrder.Persistence.Repositories
 		{
 			var query = _context.Order
 				.Include(o => o.Products).ToList() //Musime pridat metodu .ToList() na toto misto. Potom funguje Include s GroupBy.
-				.GroupBy(p => p.DateOfCreation.Month, (month, orders) => new
+				.GroupBy(p => p.DateOfCreation.Month, (month, orders) => new CountOfOrderByMonthsModel
 				{
 					Month = month,
 					OrdersCount = orders.Select(p => p).Count(),
-					Orders = orders.Select(order => new { order, order.Products })
+					Orders = orders.Select(order => order)
 				})
 				.OrderByDescending(order => order.OrdersCount);
 
-			//var query = _context.Order
-			//	.GroupBy(p => p.DateOfCreation)
-			//	.SelectMany(p => p.Take(2))
-			//	.Include(p => p.Products)
-			//	.AsEnumerable()
-			//	.GroupBy(p => p.DateOfCreation)
-			//	.Select(p => new CountOfOrderByMonthsModel
-			//	{
-			//		Month = p.Key.Month,
-			//		OrdersCount = p.Select(p => p).Count(),
-			//		Orders = p.Select(order => order).ToList()
-			//	});
-
-
-			return null;
+			return query;
 		}
 
 		public void Update(Order order)
