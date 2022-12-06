@@ -1,7 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
+using System.Net.Http.Headers;
+using System.Text;
 using SystemOrder.Domain.Models;
 using SystemOrder.Domain.Services;
+using SystemOrder.Extensions;
 using SystemOrder.Resources;
 
 namespace SystemOrder.Controllers
@@ -36,18 +40,18 @@ namespace SystemOrder.Controllers
 		[Route("AddProduct")]
 		[ProducesResponseType(typeof(Product), 201)]
 		[ProducesResponseType(typeof(ErrorResource), 400)]
-		public async Task<IActionResult> PostProductAsync([FromForm] SaveProductResource resource)
+		public async Task<IActionResult> PostProductAsync([FromForm] SaveProductResource resource, CancellationToken cancellationToken)
 		{
 
 			var product = _mapper.Map<SaveProductResource, Product>(resource);
-			var result = await _orderService.SaveProductAsync(product);
+			var result = await _orderService.SaveProductAsync(product, cancellationToken);
 
 			if (!result.Success)
 			{
 				return BadRequest(new ErrorResource(result.Message));
 			}
 
-			return Ok(result.Resource);
+			return Created($"products/{result.Resource.ProductId}", result.Resource);
 		}
 
 		[HttpPut("UpdateProduct")]
@@ -83,16 +87,19 @@ namespace SystemOrder.Controllers
 
 		[HttpGet("ListAllProducts")]
 		[ProducesResponseType(typeof(IEnumerable<Product>), 200)]
-		public async Task<IEnumerable<Product>> ListAllProducts()
+		public async IAsyncEnumerable<Product> ListAllProducts()
 		{
 			var result = await _orderService.ListProductsAsync();
 
 			if (result.Count() == 0)
 			{
-				return new List<Product>() { };
+				yield return new Product { };
 			}
 
-			return result;
+			foreach (var product in result)
+			{
+				yield return product;
+			}
 		}
 
 		[HttpGet("TheMostSellProductsByCategories")]
@@ -107,6 +114,34 @@ namespace SystemOrder.Controllers
 			}
 
 			return result;
+		}
+
+		//Rozpracovane..
+		[HttpGet("ListAllProductsCsv")]
+		[ProducesResponseType(typeof(IEnumerable<Product>), 200)]
+		public async Task<IActionResult> ListAllProductsCsv()
+		{
+			var result = await _orderService.ListProductsAsync();
+			var res = result.ToCsv(";").SelectMany(s => Encoding.UTF8.GetBytes(s)).ToArray();
+
+			//if (result.Count() == 0)
+			//{
+			//	return BadRequest(new ErrorResource("An error occurred when processing ListAllProductsCsv"));
+			//}
+
+			//MemoryStream stream = new MemoryStream();
+			//StreamWriter writer = new StreamWriter(stream);
+			//writer.Write(result.ToCsv(";"));
+			//writer.Flush();
+			//stream.Position = 0;
+
+			//var http = new HttpResponseMessage(HttpStatusCode.OK);
+			//http.Content = new StreamContent(stream);
+			//http.Content.Headers.ContentType = new MediaTypeHeaderValue("text/csv");
+			//http.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment") { FileName = "Export.csv" };
+			//return http;
+
+			return File(res, "text/csv;charset=utf-8", "export.csv");
 		}
 	}
 }

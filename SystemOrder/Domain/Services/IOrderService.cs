@@ -8,7 +8,7 @@ namespace SystemOrder.Domain.Services
 		Task<ProductResponse> FindProductAsync(int id);
 		Task<IEnumerable<Product>> ListProductsAsync();
 
-		Task<ProductResponse> SaveProductAsync(Product product);
+		Task<ProductResponse> SaveProductAsync(Product product, CancellationToken cancellationToken);
 		Task<ProductResponse> UpdateProductAsync(int id, Product product);
 		Task<ProductResponse> DeleteProductAsync(int id);
 
@@ -17,7 +17,7 @@ namespace SystemOrder.Domain.Services
 		Task<OrderResponse> FindOrderAsync(int id);
 		Task<IEnumerable<Order>> ListOrdersAsync();
 
-		Task<OrderResponse> SaveOrderAsync(Order order);
+		Task<OrderResponse> SaveOrderAsync(Order order, CancellationToken cancellationToken);
 		Task<OrderResponse> UpdateOrderAsync(int id, Order order);
 		Task<OrderResponse> DeleteOrderAsync(int id);
 

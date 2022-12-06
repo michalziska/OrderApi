@@ -63,11 +63,11 @@ namespace SystemOrder.Controllers
 		[Route("AddOrder")]
 		[ProducesResponseType(typeof(Order), 201)]
 		[ProducesResponseType(typeof(ErrorResource), 400)]
-		public async Task<IActionResult> PostOrderAsync([FromBody] SaveOrderResource resource)
+		public async Task<IActionResult> PostOrderAsync([FromBody] SaveOrderResource resource, CancellationToken cancellationToken)
 		{
 
 			var product = _mapper.Map<SaveOrderResource, Order>(resource);
-			var result = await _orderService.SaveOrderAsync(product);
+			var result = await _orderService.SaveOrderAsync(product, cancellationToken);
 
 			if (!result.Success)
 			{

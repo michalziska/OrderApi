@@ -9,9 +9,9 @@ namespace SystemOrder.Persistence.Repositories
 	{
 		public ProductRepository(OrderDbContext context) : base(context) { }
 
-		public async Task AddAsync(Product product)
+		public async Task AddAsync(Product product, CancellationToken cancellationToken)
 		{
-			await _context.Products.AddAsync(product);
+			await _context.Products.AddAsync(product, cancellationToken);
 		}
 
 		public void Delete(Product product)

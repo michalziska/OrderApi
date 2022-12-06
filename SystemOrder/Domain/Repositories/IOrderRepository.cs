@@ -5,7 +5,7 @@ namespace SystemOrder.Domain.Repositories
 	public interface IOrderRepository
 	{
 		Task<IEnumerable<Order>> ListAsync();
-		Task AddAsync(Order order);
+		Task AddAsync(Order order, CancellationToken cancellationToken);
 		Task<Order> FindByIdAsync(int id);
 		void Update(Order order);
 		void Delete(Order order);

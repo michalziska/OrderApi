@@ -132,11 +132,11 @@ namespace SystemOrder.Services
 			}
 		}
 
-		public async Task<OrderResponse> SaveOrderAsync(Order order)
+		public async Task<OrderResponse> SaveOrderAsync(Order order, CancellationToken cancellationToken)
 		{
 			try
 			{
-				await _orderRepository.AddAsync(order);
+				await _orderRepository.AddAsync(order, cancellationToken);
 				await _unitOfWork.CompleteAsync();
 
 				return new OrderResponse(order);
@@ -148,11 +148,11 @@ namespace SystemOrder.Services
 			}
 		}
 
-		public async Task<ProductResponse> SaveProductAsync(Product product)
+		public async Task<ProductResponse> SaveProductAsync(Product product, CancellationToken cancellationToken)
 		{
 			try
 			{
-				await _productRepository.AddAsync(product);
+				await _productRepository.AddAsync(product, cancellationToken);
 				await _unitOfWork.CompleteAsync();
 
 				return new ProductResponse(product);
