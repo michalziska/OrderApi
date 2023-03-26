@@ -1,47 +1,29 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SystemOrder.Domain.Models;
+using SystemOrder.Persistence.Configurations;
 
 namespace SystemOrder.Persistence.Context
 {
-	public class OrderDbContext : DbContext
-	{
-		public OrderDbContext(DbContextOptions<OrderDbContext> options) : base(options)
-		{
-			Database.Migrate();
-		}
+    public class OrderDbContext : DbContext
+    {
+        public OrderDbContext(DbContextOptions<OrderDbContext> options) : base(options)
+        {
+            Database.Migrate();
+        }
 
-		public DbSet<Order> Order => Set<Order>();
-		public DbSet<Product> Products => Set<Product>();
+        public DbSet<Order> Order => Set<Order>();
+        public DbSet<Product> Products => Set<Product>();
 
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
-		{
-			base.OnModelCreating(modelBuilder);
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            _ = modelBuilder.ApplyConfigurationsFromAssembly(typeof(OrderDbContext).Assembly);
 
+            base.OnModelCreating(modelBuilder);
+        }
 
-			modelBuilder.Entity<Product>()
-				.HasMany(p => p.Orders)
-				.WithMany(p => p.Products);
-
-			modelBuilder.Entity<Order>().HasData(
-							new Order
-							{
-								OrderId = 100,
-								DateOfCreation = DateTime.Now,
-							});
-
-			modelBuilder.Entity<Product>().HasData(
-				new Product
-				{
-					ProductId = 1,
-					Name = "Chair",
-					Price = 20M,
-					Category = ECategory.Furniture,
-				});
-		}
-
-		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-		{
-			optionsBuilder.EnableSensitiveDataLogging();
-		}
-	}
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.EnableSensitiveDataLogging();
+        }
+    }
 }

@@ -12,8 +12,8 @@ using SystemOrder.Persistence.Context;
 namespace SystemOrder.Migrations
 {
     [DbContext(typeof(OrderDbContext))]
-    [Migration("20221127122230_model")]
-    partial class model
+    [Migration("20230326105821_Initialize")]
+    partial class Initialize
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,7 +44,8 @@ namespace SystemOrder.Migrations
                 {
                     b.Property<int>("OrderId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("OrderId");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
 
@@ -59,7 +60,7 @@ namespace SystemOrder.Migrations
                         new
                         {
                             OrderId = 100,
-                            DateOfCreation = new DateTime(2022, 11, 27, 13, 22, 30, 340, DateTimeKind.Local).AddTicks(6792)
+                            DateOfCreation = new DateTime(2023, 3, 26, 12, 58, 21, 219, DateTimeKind.Local).AddTicks(827)
                         });
                 });
 
@@ -67,7 +68,8 @@ namespace SystemOrder.Migrations
                 {
                     b.Property<int>("ProductId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("ProductId");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductId"));
 
@@ -76,7 +78,8 @@ namespace SystemOrder.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
@@ -88,9 +91,30 @@ namespace SystemOrder.Migrations
                     b.HasData(
                         new
                         {
-                            ProductId = 1,
+                            ProductId = 100,
                             Category = 4,
-                            Name = "Chair",
+                            Name = "New1",
+                            Price = 20m
+                        },
+                        new
+                        {
+                            ProductId = 101,
+                            Category = 4,
+                            Name = "New2",
+                            Price = 20m
+                        },
+                        new
+                        {
+                            ProductId = 102,
+                            Category = 4,
+                            Name = "New3",
+                            Price = 20m
+                        },
+                        new
+                        {
+                            ProductId = 103,
+                            Category = 4,
+                            Name = "New4",
                             Price = 20m
                         });
                 });

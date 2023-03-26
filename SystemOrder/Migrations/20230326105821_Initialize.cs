@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace SystemOrder.Migrations
 {
     /// <inheritdoc />
-    public partial class model : Migration
+    public partial class Initialize : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -30,7 +32,7 @@ namespace SystemOrder.Migrations
                 {
                     ProductId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Category = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
@@ -66,12 +68,18 @@ namespace SystemOrder.Migrations
             migrationBuilder.InsertData(
                 table: "Order",
                 columns: new[] { "OrderId", "DateOfCreation" },
-                values: new object[] { 100, new DateTime(2022, 11, 27, 13, 22, 30, 340, DateTimeKind.Local).AddTicks(6792) });
+                values: new object[] { 100, new DateTime(2023, 3, 26, 12, 58, 21, 219, DateTimeKind.Local).AddTicks(827) });
 
             migrationBuilder.InsertData(
                 table: "Products",
                 columns: new[] { "ProductId", "Category", "Name", "Price" },
-                values: new object[] { 1, 4, "Chair", 20m });
+                values: new object[,]
+                {
+                    { 100, 4, "New1", 20m },
+                    { 101, 4, "New2", 20m },
+                    { 102, 4, "New3", 20m },
+                    { 103, 4, "New4", 20m }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderProduct_ProductsProductId",

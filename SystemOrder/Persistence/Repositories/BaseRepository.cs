@@ -2,13 +2,13 @@
 
 namespace SystemOrder.Persistence.Repositories
 {
-	public abstract class BaseRepository
-	{
-		protected readonly OrderDbContext _context;
+    public abstract class BaseRepository
+    {
+        protected readonly OrderDbContext _context;
 
-		public BaseRepository(OrderDbContext context)
-		{
-			_context = context;
-		}
-	}
+        public BaseRepository(OrderDbContext context)
+        {
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+        }
+    }
 }
