@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using SystemOrder.Attributes;
 using SystemOrder.Domain.Models;
 using SystemOrder.Domain.Services;
 using SystemOrder.Extensions;
@@ -43,6 +44,9 @@ namespace SystemOrder.Controllers
         [ProducesResponseType(typeof(ErrorResource), 400)]
         public async Task<IActionResult> PostProductAsync([FromForm] SaveProductResource resource, CancellationToken cancellationToken)
         {
+            //var attrNameValidation = ValidationHelper.GetValidator<SaveProductResource>(nameof(resource.Name));
+            //var attrDescValidation = ValidationHelper.GetValidator<SaveProductResource>(nameof(resource.Description));
+
 
             var product = _mapper.Map<SaveProductResource, Product>(resource);
             var result = await _orderService.SaveProductAsync(product, cancellationToken);

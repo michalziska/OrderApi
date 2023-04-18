@@ -25,6 +25,7 @@ namespace SystemOrder.Persistence.Configurations
                     Name = "New1",
                     Price = 20M,
                     Category = ECategory.Furniture,
+                    Description = "Test1"
                   },
                   new Product
                   {
@@ -32,6 +33,7 @@ namespace SystemOrder.Persistence.Configurations
                     Name = "New2",
                     Price = 20M,
                     Category = ECategory.Furniture,
+                    Description = "Test2"
                   },
                   new Product
                   {
@@ -39,6 +41,7 @@ namespace SystemOrder.Persistence.Configurations
                     Name = "New3",
                     Price = 20M,
                     Category = ECategory.Furniture,
+                    Description = "Test3"
                   },
                   new Product
                   {
@@ -46,6 +49,7 @@ namespace SystemOrder.Persistence.Configurations
                     Name = "New4",
                     Price = 20M,
                     Category = ECategory.Furniture,
+                    Description = "Test4"
                   },
                 });
         }

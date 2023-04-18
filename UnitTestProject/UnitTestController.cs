@@ -60,12 +60,12 @@ namespace UnitTestProject
         {
             //arrange
             var productList = GetProducts();
-            orderService.Setup(x => x.ListProductsAsync()).ReturnsAsync(productList);
+            //orderService.Setup(x => x.ListProductsAsync()).ReturnsAsync(productList);
             var productController = new ProductController(orderService.Object, _mapper);
 
             //act
             var products = new List<Product>();
-            await foreach (var product in productController.ListAllProducts())
+            await foreach (var product in productController.ListAllProducts(new SystemOrder.Resources.ProductResourceParameters()))
             {
                 products.Add(product);
             }
